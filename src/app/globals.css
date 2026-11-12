@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white text-black dark:bg-black dark:text-white duration-700 ease-in-out;
+}
+
+@keyframes cardanimation {
+  from { opacity: 0; scale: 0.5; }
+  to   { opacity: 1; scale: 1; }
+}
+.card_text_anima {
+  animation: cardanimation linear;
+  animation-timeline: view();
+  animation-range: entry 0 cover 30%;
+}
+
+.movie_card_container {
+  width: 100%;
+  row-gap: 10px;
+  column-gap: 7px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar,
+.branding_movie_list::-webkit-scrollbar { display: none; }
+
+.branding_movie_list {
+  @apply md:w-full w-[90%];
+  display: flex;
+  gap: 16px;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+.branding_movie_list > * {
+  @apply md:mx-[11px] mx-[4px];
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  transition: transform 0.3s ease, margin 0.3s ease;
+}
+.branding_movie_list > .scaled {
+  @apply transform md:scale-[1.54] md:mx-[16px] transition-all ease-in-out scale-[1.3];
+}
