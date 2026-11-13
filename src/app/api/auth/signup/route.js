@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";
-import User from "@/lib/models/User";
+import { User } from "@/lib/models";
 import { signToken, setAuthCookie } from "@/lib/auth";
 import { validateSignup } from "@/lib/validators";
 import { getSettings } from "@/lib/settings";

@@ -1,5 +1,5 @@
 import { connectDB } from "./db";
-import Setting from "./models/Setting";
+import { Setting } from "./models";
 
 export const DEFAULT_SETTINGS = {
   signupsOpen: true,

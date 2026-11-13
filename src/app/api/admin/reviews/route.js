@@ -1,6 +1,6 @@
-import Review from "@/lib/models/Review";
+import { Review } from "@/lib/models";
 import { ok, clampInt } from "@/lib/http";
-import { guard } from "../guard";
+import { guard } from "@/lib/session";
 
 export async function GET(req) {
   const denied = await guard();

@@ -1,7 +1,7 @@
-import MovieOverride from "@/lib/models/MovieOverride";
+import { MovieOverride } from "@/lib/models";
 import { bustOverrides } from "@/lib/overrides";
 import { ok } from "@/lib/http";
-import { guard } from "../../guard";
+import { guard } from "@/lib/session";
 
 export async function DELETE(_req, { params }) {
   const denied = await guard();

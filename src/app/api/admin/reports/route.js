@@ -1,6 +1,6 @@
-import Report from "@/lib/models/Report";
+import { Report } from "@/lib/models";
 import { ok } from "@/lib/http";
-import { guard } from "../guard";
+import { guard } from "@/lib/session";
 
 export async function GET(req) {
   const denied = await guard();

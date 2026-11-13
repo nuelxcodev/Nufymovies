@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";
-import User from "@/lib/models/User";
+import { User } from "@/lib/models";
 import { signToken, setAuthCookie, ADMIN_TTL } from "@/lib/auth";
 import { safeEqual } from "@/lib/safeEqual";
 import { rateLimit, clientIp } from "@/lib/rateLimit";

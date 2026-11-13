@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Review from "@/lib/models/Review";
+import { Review } from "@/lib/models";
 import { ok, fail, readJson } from "@/lib/http";
-import { guard } from "../../guard";
+import { guard } from "@/lib/session";
 
 export async function PATCH(req, { params }) {
   const denied = await guard();

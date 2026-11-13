@@ -1,9 +1,8 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-import User from "@/lib/models/User";
-import Review from "@/lib/models/Review";
+import { User, Review } from "@/lib/models";
 import { ok, fail, readJson } from "@/lib/http";
-import { guard } from "../../guard";
+import { guard } from "@/lib/session";
 
 const valid = (id) => mongoose.isValidObjectId(id);
 

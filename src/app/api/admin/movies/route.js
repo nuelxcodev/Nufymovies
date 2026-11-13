@@ -1,8 +1,8 @@
-import MovieOverride from "@/lib/models/MovieOverride";
+import { MovieOverride } from "@/lib/models";
 import { bustOverrides } from "@/lib/overrides";
 import { isArchiveId } from "@/lib/archive";
 import { ok, fail, readJson } from "@/lib/http";
-import { guard } from "../guard";
+import { guard } from "@/lib/session";
 
 export async function GET() {
   const denied = await guard();

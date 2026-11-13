@@ -1,9 +1,5 @@
 import { connectDB } from "@/lib/db";
-import User from "@/lib/models/User";
-import Review from "@/lib/models/Review";
-import Report from "@/lib/models/Report";
-import Event from "@/lib/models/Event";
-import MovieOverride from "@/lib/models/MovieOverride";
+import { User, Review, Report, Event, MovieOverride } from "@/lib/models";
 import { countryName } from "@/lib/countries";
 
 export const dynamic = "force-dynamic";

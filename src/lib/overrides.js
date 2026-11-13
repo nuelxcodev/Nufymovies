@@ -1,5 +1,5 @@
 import { connectDB } from "./db";
-import MovieOverride from "./models/MovieOverride";
+import { MovieOverride } from "./models";
 
 let cache = { at: 0, map: new Map() };
 

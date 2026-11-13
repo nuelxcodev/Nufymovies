@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import { COOKIE, verifyToken } from "./auth";
 import { connectDB } from "./db";
-import User from "./models/User";
+import { User } from "./models";
 import { tierFor } from "./age";
+import { fail } from "./http";
 
 export const getSession = cache(async () => {
   const token = cookies().get(COOKIE)?.value;
@@ -67,4 +68,12 @@ export async function requirePageUser() {
   const user = await getCurrentUser();
   if (!user) redirect("/signin");
   return user;
+}
+
+// Admin API routes: returns a 404 Response if the caller isn't admin, otherwise connects the DB and returns null.
+export async function guard() {
+  const { error } = await requireAdmin();
+  if (error) return fail("Not found", 404);
+  await connectDB();
+  return null;
 }

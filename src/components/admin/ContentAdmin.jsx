@@ -21,7 +21,7 @@ export default function ContentAdmin() {
 
   const search = async (e) => {
     e.preventDefault();
-    const r = await api(`/api/admin/tmdb-search?q=${encodeURIComponent(q)}`);
+    const r = await api(`/api/admin/lookup?type=tmdb&q=${encodeURIComponent(q)}`);
     setResults(r.items || []);
     if (!r.success) setNote(r.message);
   };
@@ -42,7 +42,7 @@ export default function ContentAdmin() {
     loadRules();
   };
   const archiveSearch = async () => {
-    const r = await api(`/api/admin/archive-search?q=${encodeURIComponent(aq)}`);
+    const r = await api(`/api/admin/lookup?type=archive&q=${encodeURIComponent(aq)}`);
     setARes(r.items || []);
   };
 

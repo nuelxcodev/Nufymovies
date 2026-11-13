@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/db";
-import User from "@/lib/models/User";
+import { User } from "@/lib/models";
 import { requireUser } from "@/lib/session";
 import { ok, fail, readJson } from "@/lib/http";
 

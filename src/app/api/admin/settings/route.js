@@ -1,7 +1,7 @@
-import Setting from "@/lib/models/Setting";
+import { Setting } from "@/lib/models";
 import { getSettings, bustSettings } from "@/lib/settings";
 import { ok, readJson } from "@/lib/http";
-import { guard } from "../guard";
+import { guard } from "@/lib/session";
 
 export async function GET() {
   const denied = await guard();

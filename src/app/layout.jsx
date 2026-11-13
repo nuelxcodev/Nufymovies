@@ -5,13 +5,39 @@ import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 import ProfileProvider from "@/components/ProfileProvider";
 import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import Maintenance from "@/components/Maintenance";
 import { getCurrentUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 const body = Figtree({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+
+function Footer() {
+  return (
+    <footer className="mt-20 border-t border-line">
+      <div className="page flex flex-col gap-4 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
+        <p className="font-display text-lg font-bold text-brand">nufy</p>
+        <p className="max-w-xl">
+          Full-length films come from the Internet Archive&apos;s public-domain collections. Metadata and trailers by{" "}
+          <a className="underline" href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>; streaming availability by JustWatch.
+          This product uses the TMDB API but is not endorsed or certified by TMDB.
+        </p>
+        <Link href="/free" className="font-medium text-ink underline">Free library</Link>
+      </div>
+    </footer>
+  );
+}
+
+function Maintenance() {
+  return (
+    <main className="flex min-h-screen items-center justify-center px-6 text-center">
+      <div className="max-w-md">
+        <h1 className="text-4xl font-extrabold">Back in a moment</h1>
+        <p className="mt-3 text-muted">Nufy is being updated. Everything will be back shortly, and your list and progress are safe.</p>
+        <Link href="/signin" className="mt-6 inline-block text-sm text-muted underline">Staff sign in</Link>
+      </div>
+    </main>
+  );
+}
 
 export const metadata = {
   title: { default: "Nufy Movies", template: "%s · Nufy Movies" },

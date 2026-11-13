@@ -1,6 +1,6 @@
-import User from "@/lib/models/User";
+import { User } from "@/lib/models";
 import { ok, clampInt } from "@/lib/http";
-import { guard } from "../guard";
+import { guard } from "@/lib/session";
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
