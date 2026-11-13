@@ -1,6 +1,6 @@
 {
-  "name": "mymoviebox",
-  "version": "1.0.0",
+  "name": "nufymovies",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
+    "jose": "^5.9.6",
     "mongoose": "^8.9.4",
     "next": "14.2.21",
     "react": "^18.3.1",

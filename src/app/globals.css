@@ -2,45 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-white text-black dark:bg-black dark:text-white duration-700 ease-in-out;
+/* ── Design tokens (space-separated RGB so Tailwind can apply opacity) ───── */
+:root {
+  --bg: 245 245 242;
+  --surface: 255 255 255;
+  --surface2: 236 235 230;
+  --line: 218 216 209;
+  --ink: 22 21 18;
+  --muted: 100 96 88;
+  --brand: 190 123 0;
+  --brand-ink: 255 255 255;
+  --good: 19 122 70;
+  --danger: 192 38 38;
+}
+.dark {
+  --bg: 14 13 12;
+  --surface: 25 23 21;
+  --surface2: 38 35 32;
+  --line: 60 56 50;
+  --ink: 244 240 232;
+  --muted: 160 154 144;
+  --brand: 245 176 30;
+  --brand-ink: 20 19 17;
+  --good: 74 201 130;
+  --danger: 244 105 100;
 }
 
-@keyframes cardanimation {
-  from { opacity: 0; scale: 0.5; }
-  to   { opacity: 1; scale: 1; }
-}
-.card_text_anima {
-  animation: cardanimation linear;
-  animation-timeline: view();
-  animation-range: entry 0 cover 30%;
+@layer base {
+  html { color-scheme: light; scroll-behavior: smooth; }
+  html.dark { color-scheme: dark; }
+  body { @apply bg-bg text-ink font-sans antialiased; transition: background-color 0.3s ease, color 0.3s ease; }
+  h1, h2, h3 { @apply font-display tracking-tight; }
+  :focus-visible { outline: 2px solid rgb(var(--brand)); outline-offset: 2px; border-radius: 4px; }
+  ::selection { background: rgb(var(--brand) / 0.35); }
+  select option { @apply bg-surface text-ink; }
 }
 
-.movie_card_container {
-  width: 100%;
-  row-gap: 10px;
-  column-gap: 7px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply bg-brand text-brand-ink hover:brightness-110; }
+  .btn-ghost { @apply bg-surface2 text-ink hover:bg-line; }
+  .btn-outline { @apply border border-line text-ink hover:bg-surface2; }
+  .btn-danger { @apply bg-danger/15 text-danger hover:bg-danger/25; }
+  .btn-overlay { @apply bg-white/15 text-white backdrop-blur hover:bg-white/25; }
+  .input { @apply w-full rounded-lg border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-brand; }
+  .chip { @apply inline-flex items-center gap-1 rounded-md bg-surface2 px-2 py-0.5 text-xs font-medium text-muted; }
+  .chip-good { @apply bg-good/15 text-good; }
+  .chip-brand { @apply bg-brand/15 text-brand; }
+  .panel { @apply rounded-xl border border-line bg-surface; }
+  .page { @apply mx-auto w-full max-w-7xl px-4 md:px-6; }
 }
 
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-.scrollbar-hide::-webkit-scrollbar,
-.branding_movie_list::-webkit-scrollbar { display: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 
-.branding_movie_list {
-  @apply md:w-full w-[90%];
-  display: flex;
-  gap: 16px;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
+.poster-grid {
+  display: grid;
+  gap: 18px 12px;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
 }
-.branding_movie_list > * {
-  @apply md:mx-[11px] mx-[4px];
-  flex-shrink: 0;
-  scroll-snap-align: center;
-  transition: transform 0.3s ease, margin 0.3s ease;
-}
-.branding_movie_list > .scaled {
-  @apply transform md:scale-[1.54] md:mx-[16px] transition-all ease-in-out scale-[1.3];
+
+/* Hero poster rail: snap scrolling, the centred poster is the selected film. */
+.hero-rail { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 18px 40% 22px; }
+.hero-rail > * { flex-shrink: 0; scroll-snap-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

@@ -1,32 +1,52 @@
-import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";
 import User from "@/lib/models/User";
 import { signToken, setAuthCookie } from "@/lib/auth";
+import { validateSignup } from "@/lib/validators";
+import { getSettings } from "@/lib/settings";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { ok, fail, readJson } from "@/lib/http";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const body = await req.json().catch(() => ({}));
-  const credentials = body.credentials || body;
-  const email = (credentials.email || "").trim().toLowerCase();
-  const password = (credentials.password || "").trim();
+  const rl = rateLimit(`signup:${clientIp(req)}`, 8, 60 * 60 * 1000);
+  if (!rl.ok) return fail("Too many sign-ups from this network. Try again later.", 429);
 
-  if (!email || !password || password.length < 6) {
-    return NextResponse.json(
-      { success: false, message: "Enter a valid email and a password of 6+ characters" },
-      { status: 400 }
-    );
+  const { errors, values } = validateSignup(await readJson(req));
+  if (Object.keys(errors).length) return fail("Please fix the highlighted fields", 400, { errors });
+
+  const adminLogin = (process.env.ADMIN_LOGIN || "").trim().toLowerCase();
+  if (adminLogin && (values.username.toLowerCase() === adminLogin || values.email === adminLogin)) {
+    return fail("Please fix the highlighted fields", 400, { errors: { username: "That username is reserved" } });
   }
+
   try {
+    const settings = await getSettings();
+    if (!settings.signupsOpen) return fail("New sign-ups are paused right now. Please check back soon.", 403);
+
     await connectDB();
-    if (await User.findOne({ email })) {
-      return NextResponse.json({ success: false, message: "User already exists" }, { status: 409 });
+    if (await User.findOne({ email: values.email })) {
+      return fail("Please fix the highlighted fields", 409, { errors: { email: "An account with this email already exists" } });
     }
-    const user = await User.create({ email, password: await bcrypt.hash(password, 10) });
-    const res = NextResponse.json({ success: true, message: "Account created" });
-    setAuthCookie(res, signToken({ id: user._id.toString(), email }));
+    if (await User.findOne({ usernameLower: values.username.toLowerCase() })) {
+      return fail("Please fix the highlighted fields", 409, { errors: { username: "That username is taken" } });
+    }
+
+    const user = await User.create({
+      username: values.username,
+      usernameLower: values.username.toLowerCase(),
+      email: values.email,
+      password: await bcrypt.hash(values.password, 10),
+      phone: values.phone,
+      country: values.country,
+      age: values.age,
+      lastLoginAt: new Date(),
+    });
+    const res = ok({ message: "Account created", redirect: "/" });
+    setAuthCookie(res, await signToken({ sub: String(user._id), role: "user" }));
     return res;
   } catch (e) {
-    console.error(e);
-    return NextResponse.json({ success: false, message: "Something went wrong, try again" }, { status: 500 });
+    console.error("signup", e);
+    return fail("Something went wrong, try again", 500);
   }
 }

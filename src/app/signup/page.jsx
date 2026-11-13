@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AuthForm from "@/components/AuthForm";
-export const metadata = { title: "Sign up · MyMovieBox" };
-export default function Page() { return <AuthForm mode="signup" />; }
+export const metadata = { title: "Create account" };
+export default function Page() { return <Suspense><AuthForm mode="signup" /></Suspense>; }
